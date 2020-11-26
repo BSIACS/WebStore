@@ -25,7 +25,8 @@
                     <td>@employee.Name</td>
                     <td>@employee.Surename</td>
                     <td>@employee.Patronymic</td>
-                    <td>@employee.Age</td>                    
+                    <td>@employee.Age</td>
+                    <td>@Html.ActionLink("Подробнее", "Details", new { id = employee.Id })</td>
                 </tr>
             }
         </tbody>
