@@ -1,0 +1,48 @@
+﻿@model WebStore.Models.Employee
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Подробная информация о сотруднике</title>
+</head>
+<body>
+    <h2>Подробная информация о сотруднике</h2>
+    @if (Model != null)
+    {
+        <table>
+            <thead>
+                <tr>
+                    <td>Имя</td>
+                    <td>Фамилия</td>
+                    <td>Отчество</td>
+                    <td>Пол</td>
+                    <td>Возраст</td>
+                    <td>Профессия</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Name</td>
+                    <td>@Model.Surename</td>
+                    <td>@Model.Patronymic</td>
+                    <td>@Model.Gender</td>
+                    <td>@Model.Age</td>
+                    <td>@Model.Profession</td>
+
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Сотрудник не найден</p>
+    }
+
+    <hr />
+
+    @Html.ActionLink("Вернуться на главную", "EmployeesList")
+
+</body>
+</html>
