@@ -27,11 +27,13 @@ namespace WebStore
 
             app.UseRouting();               //Используем систему маршрутизации
 
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=EmployeesList}");
+                    pattern: "{controller=Home}/{action=Index}");
             });
         }
     }
