@@ -49,5 +49,29 @@ namespace WebStore.Controllers
 
             return View("EmployeesList", EmployeesInfoProvider.Employees);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Employee employee = EmployeesInfoProvider.Employees.FirstOrDefault(emp => emp.Id == id);
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Employee employee)
+        {
+            Employee emp = EmployeesInfoProvider.Employees.FirstOrDefault( item => item.Id == employee.Id);
+
+            if (emp != null) {
+                emp.Name = employee.Name;
+                emp.Surename = employee.Surename;
+                emp.Patronymic = employee.Patronymic;
+                emp.Age = employee.Age;
+                emp.Profession = employee.Profession;
+            }
+
+            return View("EmployeesList", EmployeesInfoProvider.Employees);
+        }
     }
 }

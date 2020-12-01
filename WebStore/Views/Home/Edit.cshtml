@@ -1,0 +1,57 @@
+﻿@model WebStore.Models.Employee
+
+
+<div class="container">
+    <div class="row">
+        <h2 class="title text-center">Редактировать информацию о сотруднике</h2>
+        <form asp-action="Edit" asp-controller="Home" method="post">
+            <dl class="dl-horizontal">
+
+                <dd>
+                    <input type="hidden" asp-for="Id" />
+                </dd>
+                <dt>
+                    Имя
+                </dt>
+                <dd class="my-dd-margin-bottom">
+                    <input type="text" asp-for="Name" />
+                </dd>
+
+                <dt>
+                    Фамилия
+                </dt>
+                <dd class="my-dd-margin-bottom">
+                    <input asp-for="Surename" />
+                </dd>
+
+                <dt>
+                    Отчество
+                </dt>
+                <dd class="my-dd-margin-bottom">
+                    <input asp-for="Patronymic" />
+                </dd>
+
+                <dt>
+                    Возраст
+                </dt>
+                <dd class="my-dd-margin-bottom">
+                    <input asp-for="Age" />
+                </dd>
+
+                <dt>
+                    Профессия
+                </dt>
+                <dd class="my-dd-margin-bottom">
+                    <input asp-for="Profession" />
+                </dd>                
+            </dl>            
+
+            <div>
+                <input type="submit" value="Сохранить изменения" />
+            </div>
+        </form>
+        <hr />
+    </div>
+</div>
+
+

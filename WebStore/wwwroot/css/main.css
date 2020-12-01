@@ -2543,3 +2543,7 @@ h2.title {
 	font-size: 15px;
 	color: #FE980F;
 }
+
+.my-dd-margin-bottom {
+	margin-bottom: 10px;
+}
