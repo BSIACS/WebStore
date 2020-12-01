@@ -24,8 +24,10 @@ namespace WebStore.Controllers
 
         public IActionResult Delete(int id)
         {
-            EmployeesInfoProvider.Employees = EmployeesInfoProvider.Employees.Where(emp => emp.Id != id);
+            if (EmployeesInfoProvider.Employees.FirstOrDefault(emp => emp.Id == id) == null)
+                return View("~/Views/Home/Error404.cshtml");
 
+            EmployeesInfoProvider.Employees = EmployeesInfoProvider.Employees.Where(emp => emp.Id != id);
             return View("EmployeesList", EmployeesInfoProvider.Employees);
         }
 
@@ -33,6 +35,9 @@ namespace WebStore.Controllers
         public IActionResult Edit(int id)
         {
             Employee employee = EmployeesInfoProvider.Employees.FirstOrDefault(emp => emp.Id == id);
+
+            if (employee == null)
+                return View("~/Views/Home/Error404.cshtml");
 
             return View(employee);
         }
