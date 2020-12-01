@@ -19,6 +19,7 @@ namespace WebStore.Data
 
         public static IEnumerable<Employee> Employees {
             get => employees;
+            set => employees = value;
         }
     }
 }

@@ -42,5 +42,12 @@ namespace WebStore.Controllers
 
             return View(employee);
         }
+
+        public IActionResult Delete(int id)
+        {
+            EmployeesInfoProvider.Employees = EmployeesInfoProvider.Employees.Where( emp => emp.Id != id);
+
+            return View("EmployeesList", EmployeesInfoProvider.Employees);
+        }
     }
 }

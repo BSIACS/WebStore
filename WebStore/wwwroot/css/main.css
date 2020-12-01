@@ -2521,3 +2521,25 @@ h2.title {
 }
 
 
+/*************************
+******* Мои стили ********
+**************************/
+
+.m_text-bold {
+	font-weight: 600;
+}
+
+.myLink {
+	font-size: 15px;
+	color: #696763;
+}
+
+.myLink:visited {
+	font-size: 15px;
+	color: #696763;
+}
+
+.myLink:hover {
+	font-size: 15px;
+	color: #FE980F;
+}

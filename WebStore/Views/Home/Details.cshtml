@@ -1,48 +1,41 @@
 ﻿@model WebStore.Models.Employee
 
-<!DOCTYPE html>
+<div class="container">
+    <div class="row">
+        <h2 class="title text-center">Карта сотрудника</h2>
+        @if (Model != null)
+        {
+            <table class="table table-striped">
+                <thead class="text-center m_text-bold">
+                    <tr>
+                        <td>Имя</td>
+                        <td>Фамилия</td>
+                        <td>Отчество</td>
+                        <td>Пол</td>
+                        <td>Возраст</td>
+                        <td>Профессия</td>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <td>@Model.Name</td>
+                        <td>@Model.Surename</td>
+                        <td>@Model.Patronymic</td>
+                        <td>@Model.Gender</td>
+                        <td>@Model.Age</td>
+                        <td>@Model.Profession</td>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Подробная информация о сотруднике</title>
-</head>
-<body>
-    <h2>Подробная информация о сотруднике</h2>
-    @if (Model != null)
-    {
-        <table>
-            <thead>
-                <tr>
-                    <td>Имя</td>
-                    <td>Фамилия</td>
-                    <td>Отчество</td>
-                    <td>Пол</td>
-                    <td>Возраст</td>
-                    <td>Профессия</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>@Model.Name</td>
-                    <td>@Model.Surename</td>
-                    <td>@Model.Patronymic</td>
-                    <td>@Model.Gender</td>
-                    <td>@Model.Age</td>
-                    <td>@Model.Profession</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Сотрудник не найден</p>
+        }
 
-                </tr>
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>Сотрудник не найден</p>
-    }
-
-    <hr />
-
-    @Html.ActionLink("Вернуться на главную", "EmployeesList")
-
-</body>
-</html>
+        <a class="myLink" asp-action="EmployeesList">Вернуться к списку сотрудников</a>
+        <hr />
+        <br>
+    </div>   
+</div>

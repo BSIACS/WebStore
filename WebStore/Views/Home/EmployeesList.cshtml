@@ -3,9 +3,9 @@
 
 <div class="container">
     <div class="row">
-        <h2>Список сотрудников</h2>
-        <table class="table">
-            <thead>
+        <h2 class="title text-center">Список сотрудников</h2>
+        <table class="table table-striped">
+            <thead class="text-center m_text-bold">
                 <tr>
                     <td>Имя</td>
                     <td>Фамилия</td>
@@ -13,7 +13,7 @@
                     <td>Возраст</td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
                 @foreach (var employee in Model)
                 {
                     <tr>
@@ -21,11 +21,13 @@
                         <td>@employee.Surename</td>
                         <td>@employee.Patronymic</td>
                         <td>@employee.Age</td>
-                        <td>@Html.ActionLink("Подробнее", "Details", new { id = employee.Id })</td>
+                        <td><a class="myLink" asp-action="Details" asp-route-id="@employee.Id">Подробнее</a></td>
+                        <td><a class="myLink" asp-action="Delete" asp-route-id="@employee.Id">Удалить</a></td>
                     </tr>
                 }
             </tbody>
         </table>
+        <hr />
     </div>
 </div>
 
