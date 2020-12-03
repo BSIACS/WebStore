@@ -14,7 +14,7 @@ namespace WebStore
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();              //Добавляем сервисы MVC
+            services.AddMvc();
         }
 
 
@@ -25,13 +25,15 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();               //Используем систему маршрутизации
+            app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=EmployeesList}");
+                    pattern: "{controller=Home}/{action=Index}");
             });
         }
     }
