@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Services;
 
 namespace WebStore
 {
@@ -14,6 +15,7 @@ namespace WebStore
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();
             services.AddMvc();
         }
 
