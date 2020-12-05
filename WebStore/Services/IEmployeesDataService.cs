@@ -12,9 +12,9 @@ namespace WebStore.Services
 
         public Employee GetById(int id);
 
-        public int? Add(Employee employee);
+        public int Add(Employee employee);
 
-        public bool Edit(Employee employee);
+        public void Edit(Employee employee);
 
         public bool Remove(int id);
     }

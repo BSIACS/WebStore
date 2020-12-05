@@ -16,26 +16,17 @@ namespace WebStore.Services
             _employees = EmployeesInfoProvider.Employees;
         }
 
-        public int? Add(Employee employee)
+        public int Add(Employee employee)
         {
-            if (employee is null)
-                return null;
-
             employee.Id = _employees.Max(x => x.Id) + 1;
             _employees.Add(employee);
 
             return employee.Id;
         }
 
-        public bool Edit(Employee employee)
+        public void Edit(Employee employee)
         {
-            if (employee is null)
-                return false;
-
             Employee emp = _employees.FirstOrDefault(e => e.Id == employee.Id);
-
-            if (emp is null)
-                return false;
 
             emp.Id = employee.Id;
             emp.Name = employee.Name;
@@ -44,8 +35,6 @@ namespace WebStore.Services
             emp.Age = employee.Age;
             emp.Gender = employee.Gender;
             emp.Profession = employee.Profession;
-
-            return true;
         }
 
         public IList<Employee> GetAll() => _employees;
