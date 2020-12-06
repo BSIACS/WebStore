@@ -23,7 +23,7 @@ namespace WebStore.Models
         public string Gender { get; set; }
 
         /// <summary>Возраст</summary>
-        public int Age { get; set; }
+        public int? Age { get; set; }
 
         /// <summary>Профессия</summary>
         public string Profession { get; set; }

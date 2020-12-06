@@ -89,6 +89,9 @@ namespace WebStore.Controllers
         [HttpPost]
         public IActionResult Edit(EmployeeViewModel employeeViewModel)
         {
+            if (!ModelState.IsValid)
+                return View(employeeViewModel);
+
             if (employeeViewModel is null)
                 throw new ArgumentNullException(nameof(employeeViewModel));
 
@@ -116,6 +119,9 @@ namespace WebStore.Controllers
         [HttpPost]
         public IActionResult Add(EmployeeViewModel employeeViewModel)
         {
+            if (!ModelState.IsValid)
+                return View(employeeViewModel);
+
             if (employeeViewModel is null)
                 throw new ArgumentNullException(nameof(employeeViewModel));
 
