@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Services;
 
 namespace WebStore
 {
@@ -14,7 +15,8 @@ namespace WebStore
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
+            services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
 
@@ -23,15 +25,16 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();                                                   // Добавлена связь с браузером
             }
 
-            app.UseRouting();
+            app.UseRouting();                                                           // Подключение EndpointRoutingMiddleware
 
-            app.UseStaticFiles();
+            app.UseStaticFiles();                                                       // Включена поддержка статических файлов
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
+                endpoints.MapControllerRoute(                                           // Определение маршрутов
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}");
             });

@@ -5,58 +5,140 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Data;
 using WebStore.Models;
+using WebStore.Services;
+using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
     public class EmployeesController : Controller
     {
+        IEmployeesDataService _employeesDataService;
+
+        public EmployeesController(IEmployeesDataService employeesDataService)
+        {
+            _employeesDataService = employeesDataService;
+        }
+
         public IActionResult EmployeesList()
         {
-            return View(EmployeesInfoProvider.Employees);
+            return View(_employeesDataService.GetAll());
         }
 
         public IActionResult Details(int id)
         {
-            Employee employee = EmployeesInfoProvider.Employees.FirstOrDefault(emp => emp.Id == id);
+            Employee employee = _employeesDataService.GetById(id);
 
-            return View(employee);
+            if (employee is not null)
+                return View(employee);
+            else
+                return View("~/Views/Home/Error404.cshtml");
         }
 
         public IActionResult Delete(int id)
         {
-            if (EmployeesInfoProvider.Employees.FirstOrDefault(emp => emp.Id == id) == null)
-                return View("~/Views/Home/Error404.cshtml");
+            if (id <= 0)
+                return BadRequest();
 
-            EmployeesInfoProvider.Employees = EmployeesInfoProvider.Employees.Where(emp => emp.Id != id);
-            return View("EmployeesList", EmployeesInfoProvider.Employees);
+            Employee employee = _employeesDataService.GetById(id);
+
+            return View(new EmployeeViewModel()
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Surename = employee.Surename,
+                Patronymic = employee.Patronymic,
+                Age = employee.Age,
+                Gender = employee.Gender,
+                Profession = employee.Profession
+            });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirm(int id)
+        {
+            if(id <= 0)
+                return BadRequest();
+
+            _employeesDataService.Remove(id);
+
+            return View("EmployeesList", _employeesDataService.GetAll());
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            Employee employee = EmployeesInfoProvider.Employees.FirstOrDefault(emp => emp.Id == id);
+            if (id <= 0)
+                return BadRequest();
 
-            if (employee == null)
+            Employee employee = _employeesDataService.GetById(id);
+
+            if(employee is null)
                 return View("~/Views/Home/Error404.cshtml");
-
-            return View(employee);
+            else
+                return View(new EmployeeViewModel() { 
+                    Id = employee.Id,
+                    Name = employee.Name,
+                    Surename = employee.Surename,
+                    Patronymic = employee.Patronymic,
+                    Age = employee.Age,
+                    Gender = employee.Gender,
+                    Profession = employee.Profession
+                });
         }
 
         [HttpPost]
-        public IActionResult Edit(Employee employee)
+        public IActionResult Edit(EmployeeViewModel employeeViewModel)
         {
-            Employee emp = EmployeesInfoProvider.Employees.FirstOrDefault(item => item.Id == employee.Id);
+            if (!ModelState.IsValid)
+                return View(employeeViewModel);
 
-            if (emp != null)
+            if (employeeViewModel is null)
+                throw new ArgumentNullException(nameof(employeeViewModel));
+
+            Employee employee = new Employee()
             {
-                emp.Name = employee.Name;
-                emp.Surename = employee.Surename;
-                emp.Patronymic = employee.Patronymic;
-                emp.Age = employee.Age;
-                emp.Profession = employee.Profession;
-            }
+                Id = employeeViewModel.Id,
+                Name = employeeViewModel.Name,
+                Surename = employeeViewModel.Surename,
+                Patronymic = employeeViewModel.Patronymic,
+                Age = employeeViewModel.Age,
+                Gender = employeeViewModel.Gender,
+                Profession = employeeViewModel.Profession
+            };
 
-            return View("EmployeesList", EmployeesInfoProvider.Employees);
+            _employeesDataService.Edit(employee);
+
+            return View("EmployeesList", _employeesDataService.GetAll());
+        }
+
+        [HttpGet]
+        public IActionResult Add() {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Add(EmployeeViewModel employeeViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(employeeViewModel);
+
+            if (employeeViewModel is null)
+                throw new ArgumentNullException(nameof(employeeViewModel));
+
+            Employee employee = new Employee()
+            {
+                Id = employeeViewModel.Id,
+                Name = employeeViewModel.Name,
+                Surename = employeeViewModel.Surename,
+                Patronymic = employeeViewModel.Patronymic,
+                Age = employeeViewModel.Age,
+                Gender = employeeViewModel.Gender,
+                Profession = employeeViewModel.Profession
+            };
+
+            _employeesDataService.Add(employee);
+
+            return View("EmployeesList", _employeesDataService.GetAll());
         }
     }
 }
