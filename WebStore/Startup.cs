@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Services;
 using WebStore.Services;
 
 namespace WebStore
@@ -16,6 +18,7 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
+            services.AddTransient<IProductData, InMemoryProductData>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
