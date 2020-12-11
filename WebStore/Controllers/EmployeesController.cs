@@ -31,7 +31,7 @@ namespace WebStore.Controllers
             if (employee is not null)
                 return View(employee);
             else
-                return View("~/Views/Home/Error404.cshtml");
+                return NotFound();
         }
 
         public IActionResult Delete(int id)
@@ -73,7 +73,7 @@ namespace WebStore.Controllers
             Employee employee = _employeesDataService.GetById(id);
 
             if(employee is null)
-                return View("~/Views/Home/Error404.cshtml");
+                return NotFound();
             else
                 return View(new EmployeeViewModel() { 
                     Id = employee.Id,
