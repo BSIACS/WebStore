@@ -1,4 +1,19 @@
-﻿@await Html.PartialAsync("Partial/_Slider")
+﻿@using WebStore.Infrastructure.Interfaces
+@inject IProductData productData
+@{ 
+    var products = productData.GetProducts(null).
+        OrderBy(p => p.Price).
+        Take(6).
+        Select(p => new ProductViewModel { 
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            ImageUrl = p.ImageUrl
+        });
+
+}
+
+@await Html.PartialAsync("Partial/_Slider")
 
 
 <section>
@@ -9,7 +24,7 @@
             </div>
 
             <div class="col-sm-9 padding-right">
-                @await Html.PartialAsync("Partial/_FeaturesItems")
+                @await Html.PartialAsync("Partial/_FeaturesItems", products)
 
                 @await Html.PartialAsync("Partial/_CategoryTab")
 
