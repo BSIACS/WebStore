@@ -22,6 +22,11 @@ namespace WebStore.DAL.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Brand>()
+                .HasMany(brand => brand.Products)
+                .WithOne(product => product.Brand)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
