@@ -10,13 +10,22 @@ using System.Threading.Tasks;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Services;
 using WebStore.Services;
+using WebStore.DAL.Context;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace WebStore
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration) => _configuration = configuration;
+
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
+            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
             services.AddTransient<IProductData, InMemoryProductData>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
