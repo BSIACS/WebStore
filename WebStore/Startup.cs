@@ -14,6 +14,7 @@ using WebStore.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using Microsoft.Extensions.Configuration;
+using WebStore.Data;
 
 namespace WebStore
 {
@@ -26,6 +27,8 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {            
             services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<WebStoreDBInitializer>();
+
             services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
             services.AddTransient<IProductData, InMemoryProductData>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
