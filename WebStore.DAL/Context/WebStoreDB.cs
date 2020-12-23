@@ -23,10 +23,10 @@ namespace WebStore.DAL.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Brand>()
-                .HasMany(brand => brand.Products)
-                .WithOne(product => product.Brand)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Brand>()
+            //    .HasMany(brand => brand.Products)
+            //    .WithOne(product => product.Brand)
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
