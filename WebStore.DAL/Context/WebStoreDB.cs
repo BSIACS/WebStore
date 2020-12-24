@@ -8,11 +8,11 @@ namespace WebStore.DAL.Context
 {
     public class WebStoreDB : DbContext
     {
-        DbSet<Product> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
 
-        DbSet<Brand> Brands { get; set; }
+        public DbSet<Brand> Brands { get; set; }
 
-        DbSet<Section> Sections { get; set; }
+        public DbSet<Section> Sections { get; set; }
 
         public WebStoreDB(DbContextOptions<WebStoreDB> options) : base(options)
         {

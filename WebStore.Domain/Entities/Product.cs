@@ -9,12 +9,14 @@ namespace WebStore.Domain.Entities
 {
     public class Product : NamedEntity, IOrderedEntity
     {
+        public string Name { get; set; }
+
         public int Order { get; set; }
 
-        public int SectionId { get; set; }
+        public int? SectionId { get; set; }
 
         [ForeignKey(nameof(SectionId))]
-        public int Section { get; set; }
+        public Section Section { get; set; }
 
         public int? BrandId { get; set; }
 

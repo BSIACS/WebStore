@@ -10,8 +10,8 @@ using WebStore.DAL.Context;
 namespace WebStore.DAL.Migrations
 {
     [DbContext(typeof(WebStoreDB))]
-    [Migration("20201223122524_Initial")]
-    partial class Initial
+    [Migration("20201224130635_Initial_Update")]
+    partial class Initial_Update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,10 +63,7 @@ namespace WebStore.DAL.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Section")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionId")
+                    b.Property<int?>("SectionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -108,13 +105,13 @@ namespace WebStore.DAL.Migrations
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
 
-                    b.HasOne("WebStore.Domain.Entities.Section", null)
+                    b.HasOne("WebStore.Domain.Entities.Section", "Section")
                         .WithMany("Products")
-                        .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SectionId");
 
                     b.Navigation("Brand");
+
+                    b.Navigation("Section");
                 });
 
             modelBuilder.Entity("WebStore.Domain.Entities.Section", b =>
