@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using WebStore.Data;
+using WebStore.Infrastructure.Services.InSqlDataBase;
 
 namespace WebStore
 {
@@ -30,7 +31,7 @@ namespace WebStore
             services.AddTransient<WebStoreDBInitializer>();
 
             services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
-            services.AddTransient<IProductData, InMemoryProductData>();
+            services.AddTransient<IProductData, InSqlDbProductData>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
