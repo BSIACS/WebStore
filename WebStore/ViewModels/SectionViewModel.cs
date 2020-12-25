@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Base.Interfaces;
 
 namespace WebStore.ViewModels
@@ -23,5 +24,6 @@ namespace WebStore.ViewModels
             ChildSections = new List<SectionViewModel>();
         }
 
+        public int productsQuantity { get; set; }
     }
 }

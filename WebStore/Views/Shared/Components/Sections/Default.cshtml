@@ -3,7 +3,7 @@
     <div class="panel-group category-products" id="accordian">
         @foreach (var parent_section in Model)
         {
-            if (parent_section.ChildSections.Count > 0)
+            if (parent_section.ChildSections.Count > 0 && Model.Where(p => p.ChildSections.Where(c => c.productsQuantity > 0).Any()).Any())
             {
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             }
-            else
+            else if(parent_section.ChildSections.Count == 0)
             {
                 <div class="panel panel-default">
                     <div class="panel-heading">

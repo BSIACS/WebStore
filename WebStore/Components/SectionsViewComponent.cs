@@ -24,10 +24,11 @@ namespace WebStore.Components
 
             IEnumerable<Section> parentSections = sections.Where(s => s.ParentId is null);
 
-            List<SectionViewModel> parentSectionViews = parentSections.Select(s => new SectionViewModel() { 
-                Id = s.Id, 
-                Name = s.Name, 
-                Order = s.Order, 
+            List<SectionViewModel> parentSectionViews = parentSections.Select(s => new SectionViewModel() {
+                Id = s.Id,
+                Name = s.Name,
+                Order = s.Order,
+                productsQuantity = _productData.GetProducts().Where(p => p.SectionId == s.Id).Count(),
             }).ToList();
 
             foreach (var parentSection in parentSectionViews) {
@@ -43,6 +44,7 @@ namespace WebStore.Components
                         Name = childSection.Name,
                         Order = childSection.Order,
                         ParentSection = parentSection,
+                        productsQuantity = _productData.GetProducts().Where(p => p.SectionId == childSection.Id).Count(),
                     });
                 }
 
