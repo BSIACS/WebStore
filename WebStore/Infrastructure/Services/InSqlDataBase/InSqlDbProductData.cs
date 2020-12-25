@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,9 +19,9 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
             _dB = dB;
         }
 
-        public IEnumerable<Brand> GetBrands() => _dB.Brands;
+        public IEnumerable<Brand> GetBrands() => _dB.Brands.Include(brand => brand.Products);
 
-        public IEnumerable<Product> GetProducts(ProductFilter productFilter) {
+        public IEnumerable<Product> GetProducts(ProductFilter productFilter = null) {
             IQueryable<Product> products = _dB.Products;
 
             if (productFilter?.BrandId != null)
@@ -32,6 +33,6 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
             return products;
         }
 
-        public IEnumerable<Section> GetSections() => _dB.Sections;
+        public IEnumerable<Section> GetSections() => _dB.Sections.Include(section => section.Products);
     }
 }

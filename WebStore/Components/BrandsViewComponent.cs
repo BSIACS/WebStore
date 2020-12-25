@@ -22,6 +22,7 @@ namespace WebStore.Components
             var brandsViewModels = _productData.GetBrands().Select(item => new BrandViewModel() { 
                 Id = item.Id,
                 Name = item.Name,
+                Quantity = item.Products.Count(),
             });
 
             return View(brandsViewModels);
