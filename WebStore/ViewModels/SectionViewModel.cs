@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Base.Interfaces;
+using WebStore.Infrastructure.Interfaces;
 
 namespace WebStore.ViewModels
 {

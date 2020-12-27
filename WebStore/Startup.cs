@@ -27,7 +27,7 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {            
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection2")));
             services.AddTransient<WebStoreDBInitializer>();
 
             services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
