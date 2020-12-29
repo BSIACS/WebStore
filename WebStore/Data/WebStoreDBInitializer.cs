@@ -8,12 +8,12 @@ using WebStore.DAL.Context;
 
 namespace WebStore.Data
 {
-    public class WebStoreDBInitializer
+    public class WebStoreDbInitializer
     {
         private readonly WebStoreDB _webStoreDB;
-        private readonly ILogger<WebStoreDBInitializer> _logger;
+        private readonly ILogger<WebStoreDbInitializer> _logger;
 
-        public WebStoreDBInitializer(WebStoreDB webStoreDB, ILogger<WebStoreDBInitializer> logger)
+        public WebStoreDbInitializer(WebStoreDB webStoreDB, ILogger<WebStoreDbInitializer> logger)
         {
             this._webStoreDB = webStoreDB;
             this._logger = logger;

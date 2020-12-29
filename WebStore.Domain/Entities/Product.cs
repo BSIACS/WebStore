@@ -9,7 +9,7 @@ namespace WebStore.Domain.Entities
 {
     public class Product : NamedEntity, IOrderedEntity
     {
-        public string Name { get; set; }
+        //public string Name { get; set; }
 
         public int Order { get; set; }
 

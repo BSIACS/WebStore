@@ -16,6 +16,7 @@ using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using WebStore.Data;
 using WebStore.Infrastructure.Services.InSqlDataBase;
+using WebStore.Employees.DAL;
 
 namespace WebStore
 {
@@ -27,8 +28,10 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {            
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection2")));
-            services.AddTransient<WebStoreDBInitializer>();
+            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<WebStoreDbInitializer>();
+
+            services.AddDbContext<EmployeesDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("EmployeesDbConnection")));
 
             services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
             services.AddTransient<IProductData, InSqlDbProductData>();
@@ -36,7 +39,7 @@ namespace WebStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDBInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer initializer)
         {
             initializer.Initialize();
 
