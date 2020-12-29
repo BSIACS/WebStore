@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebStore.Models;
+using WebStore.Employees.DAL;
 using WebStore.Services;
+using Microsoft.EntityFrameworkCore;
+using WebStore.Domain.Employees;
 
 namespace WebStore.Infrastructure.Services.InSqlDataBase
 {
     public class InSqlDbEmployeesData : IEmployeesDataService
     {
+        private EmployeesDb _db;
+
+        public InSqlDbEmployeesData(EmployeesDb db)
+        {
+            _db = db;
+        }
+
         public int Add(Employee employee)
         {
             throw new NotImplementedException();
@@ -21,7 +30,10 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
 
         public IList<Employee> GetAll()
         {
-            throw new NotImplementedException();
+            IQueryable<Employee> employees = _db.Employees.Include(emp => emp.Profession);
+            //IList<Employee> emp = employees.ToList<Employee>();
+
+            return employees.ToList<Employee>();
         }
 
         public Employee GetById(int id)

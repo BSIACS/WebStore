@@ -28,20 +28,22 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {            
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<WebStoreDbInitializer>();
+            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));        //Соединение с базой данных WebStoreDb
+            services.AddTransient<WebStoreDbInitializer>();                             // Добавлен инициализатор базы данных WebStoreDb
 
-            services.AddDbContext<EmployeesDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("EmployeesDbConnection")));
+            services.AddDbContext<EmployeesDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("EmployeesDbConnection")));   //Соединение с базой данных EmployeesDb
+            services.AddTransient<EmployeesDbInitializer>();                            // Добавлен инициализатор базы данных EmployeesDb
 
-            services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
+            services.AddTransient<IEmployeesDataService, InSqlDbEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
             services.AddTransient<IProductData, InSqlDbProductData>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer webstoreDbInitializer, EmployeesDbInitializer employeesDbInitializer)
         {
-            initializer.Initialize();
+            webstoreDbInitializer.Initialize();                                         // Старт инициализатора базы данных WebStoreDb
+            employeesDbInitializer.Initialize();                                        // Старт инициализатора базы данных EmployeesDb
 
             if (env.IsDevelopment())
             {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Data;
-using WebStore.Models;
+using WebStore.Domain.Employees;
 using WebStore.Services;
 using WebStore.ViewModels;
 
@@ -49,7 +49,7 @@ namespace WebStore.Controllers
                 Patronymic = employee.Patronymic,
                 Age = employee.Age,
                 Gender = employee.Gender,
-                Profession = employee.Profession
+                //Profession = employee.Profession
             });
         }
 
@@ -82,7 +82,7 @@ namespace WebStore.Controllers
                     Patronymic = employee.Patronymic,
                     Age = employee.Age,
                     Gender = employee.Gender,
-                    Profession = employee.Profession
+                    Profession = employee.Profession.Name
                 });
         }
 
@@ -103,7 +103,7 @@ namespace WebStore.Controllers
                 Patronymic = employeeViewModel.Patronymic,
                 Age = employeeViewModel.Age,
                 Gender = employeeViewModel.Gender,
-                Profession = employeeViewModel.Profession
+                //Profession = new Profession { Name = employeeViewModel.Profession }
             };
 
             _employeesDataService.Edit(employee);
@@ -133,7 +133,7 @@ namespace WebStore.Controllers
                 Patronymic = employeeViewModel.Patronymic,
                 Age = employeeViewModel.Age,
                 Gender = employeeViewModel.Gender,
-                Profession = employeeViewModel.Profession
+                //Profession = employeeViewModel.Profession
             };
 
             _employeesDataService.Add(employee);

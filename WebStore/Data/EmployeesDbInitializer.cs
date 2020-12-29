@@ -12,9 +12,9 @@ namespace WebStore.Data
     public class EmployeesDbInitializer
     {
         private EmployeesDb _employeesDb;
-        private ILogger _logger;
+        private ILogger<EmployeesDbInitializer> _logger;
 
-        public EmployeesDbInitializer(ILogger logger, EmployeesDb employeesDb)
+        public EmployeesDbInitializer(ILogger<EmployeesDbInitializer> logger, EmployeesDb employeesDb)
         {
             _employeesDb = employeesDb;
             _logger = logger;
@@ -48,14 +48,15 @@ namespace WebStore.Data
                 throw;
             }
 
-            InitializeDatabase();
         }
 
         private void InitializeDatabase() {
             if (_employeesDb.Employees.Any())
                 return;
 
-            using (var transaction = _employeesDb.Database.BeginTransaction()) {
+            _logger.LogInformation("Старт инициализации БД сотрудников...");
+
+            using (_employeesDb.Database.BeginTransaction()) {
                 _employeesDb.Professions.AddRange(new List<Profession>() {
                     new Profession { Id = 1, Name = "Генеральный директор"},
                     new Profession { Id = 2, Name = "Главный бухгалтер"},
@@ -72,7 +73,7 @@ namespace WebStore.Data
                 _employeesDb.Database.CommitTransaction();
             }
 
-            using (var transaction = _employeesDb.Database.BeginTransaction())
+            using (_employeesDb.Database.BeginTransaction())
             {
                 _employeesDb.Employees.AddRange(new List<Employee>() {
                     new Employee { Name = "Евграф", Surename = "Антонов", Patronymic = "Дартвэйдерович", Gender = "Мужской", Age = 49, ProfessionId = 1 },
@@ -93,6 +94,8 @@ namespace WebStore.Data
                 _employeesDb.SaveChanges();
 
                 _employeesDb.Database.CommitTransaction();
+
+                _logger.LogInformation("БД сотрудников инициализированна...");
             }
 
 
