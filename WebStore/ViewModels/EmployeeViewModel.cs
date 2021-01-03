@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Domain.Employees;
 
 namespace WebStore.ViewModels
 {
@@ -32,7 +33,7 @@ namespace WebStore.ViewModels
         /// <summary>Пол</summary>
         [Display(Name = "Пол")]
         [Required(ErrorMessage = "Поле обязательно для ввода")]
-        [StringLength(7, ErrorMessage = "Превышено допустимое количество символов ()")]
+        [StringLength(7, ErrorMessage = "Превышено допустимое количество символов")]
         public string Gender { get; set; }
 
         /// <summary>Возраст</summary>
@@ -40,10 +41,11 @@ namespace WebStore.ViewModels
         [Range(18, 80, ErrorMessage = "Допустимое значение находится в диапазоне 18 - 80")]
         public int? Age { get; set; }
 
+        [Display(Name = "Профессия")]
         /// <summary>Профессия</summary>
-        [Display(Name = "Должность")]
-        [Required(ErrorMessage = "Поле обязательно для ввода")]
-        [StringLength(20, ErrorMessage = "Превышено допустимое количество символов (20)")]
-        public string Profession { get; set; }
+        public int ProfessionId { get; set; }
+
+        /// <summary>Профессия</summary>
+        public Profession Profession { get; set; }
     }
 }

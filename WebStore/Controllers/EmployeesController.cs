@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,16 @@ namespace WebStore.Controllers
             Employee employee = _employeesDataService.GetById(id);
 
             if (employee is not null)
-                return View(employee);
+                return View(new EmployeeViewModel()
+                {
+                    Id = employee.Id,
+                    Name = employee.Name,
+                    Surename = employee.Surename,
+                    Patronymic = employee.Patronymic,
+                    Age = employee.Age,
+                    Gender = employee.Gender,
+                    Profession = _employeesDataService.GetProfessions().FirstOrDefault(p => p.Id == employee.ProfessionId),
+                });
             else
                 return NotFound();
         }
@@ -49,7 +59,7 @@ namespace WebStore.Controllers
                 Patronymic = employee.Patronymic,
                 Age = employee.Age,
                 Gender = employee.Gender,
-                //Profession = employee.Profession
+                Profession = _employeesDataService.GetProfessions().FirstOrDefault(p => p.Id == employee.ProfessionId),
             });
         }
 
@@ -72,18 +82,26 @@ namespace WebStore.Controllers
 
             Employee employee = _employeesDataService.GetById(id);
 
-            if(employee is null)
+            if (employee is null)
                 return NotFound();
             else
-                return View(new EmployeeViewModel() { 
+            {
+                var professions = _employeesDataService.GetProfessions();
+
+                ViewBag.Professions = new SelectList(professions, "Id", "Name", "4");
+
+                return View(new EmployeeViewModel()
+                {
                     Id = employee.Id,
                     Name = employee.Name,
                     Surename = employee.Surename,
                     Patronymic = employee.Patronymic,
                     Age = employee.Age,
                     Gender = employee.Gender,
-                    Profession = employee.Profession.Name
+                    ProfessionId = _employeesDataService.GetProfessions().FirstOrDefault(e => e.Id == employee.ProfessionId).Id,                    
                 });
+            }    
+                
         }
 
         [HttpPost]
@@ -103,7 +121,7 @@ namespace WebStore.Controllers
                 Patronymic = employeeViewModel.Patronymic,
                 Age = employeeViewModel.Age,
                 Gender = employeeViewModel.Gender,
-                //Profession = new Profession { Name = employeeViewModel.Profession }
+                ProfessionId = _employeesDataService.GetProfessions().FirstOrDefault(e => e.Id == employeeViewModel.ProfessionId).Id,
             };
 
             _employeesDataService.Edit(employee);
@@ -113,6 +131,10 @@ namespace WebStore.Controllers
 
         [HttpGet]
         public IActionResult Add() {
+            var professions = _employeesDataService.GetProfessions();
+
+            ViewBag.Professions = new SelectList(professions, "Id", "Name");
+
             return View();
         }
 
@@ -133,7 +155,7 @@ namespace WebStore.Controllers
                 Patronymic = employeeViewModel.Patronymic,
                 Age = employeeViewModel.Age,
                 Gender = employeeViewModel.Gender,
-                //Profession = employeeViewModel.Profession
+                Profession = _employeesDataService.GetProfessions().Where(p => p.Id == employeeViewModel.ProfessionId).FirstOrDefault(),
             };
 
             _employeesDataService.Add(employee);

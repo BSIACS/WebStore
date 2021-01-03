@@ -20,30 +20,46 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
 
         public int Add(Employee employee)
         {
-            throw new NotImplementedException();
+            _db.Add(employee);
+            _db.SaveChanges();
+
+            return employee != null ? employee.Id : 0;
         }
 
         public void Edit(Employee employee)
         {
-            throw new NotImplementedException();
+            _db.Entry(employee).State = EntityState.Modified;
+            _db.SaveChanges();
         }
 
         public IList<Employee> GetAll()
         {
             IQueryable<Employee> employees = _db.Employees.Include(emp => emp.Profession);
-            //IList<Employee> emp = employees.ToList<Employee>();
 
             return employees.ToList<Employee>();
         }
 
         public Employee GetById(int id)
         {
-            throw new NotImplementedException();
+            return _db.Employees.FirstOrDefault(e => e.Id == id);
+        }
+
+        public IEnumerable<Profession> GetProfessions()
+        {
+            return _db.Professions;
         }
 
         public bool Remove(int id)
         {
-            throw new NotImplementedException();
+            Employee employee = _db.Employees.FirstOrDefault(e => e.Id == id);
+
+            if (employee is not null) {
+                _db.Employees.Remove(employee);
+                _db.SaveChanges();
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

@@ -17,5 +17,7 @@ namespace WebStore.Services
         public void Edit(Employee employee);
 
         public bool Remove(int id);
+
+        public IEnumerable<Profession> GetProfessions();
     }
 }

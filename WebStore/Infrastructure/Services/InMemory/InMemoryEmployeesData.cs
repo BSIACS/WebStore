@@ -42,7 +42,12 @@ namespace WebStore.Services
         public Employee GetById(int id)
         {
             return _employees.FirstOrDefault(x => x.Id == id);
-        }        
+        }
+
+        public IEnumerable<Profession> GetProfessions()
+        {
+            throw new NotImplementedException();
+        }
 
         public bool Remove(int id)
         {
