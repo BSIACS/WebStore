@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebStore.Models;
+using WebStore.Domain.Employees;
 
 namespace WebStore.Services
 {
@@ -17,5 +17,7 @@ namespace WebStore.Services
         public void Edit(Employee employee);
 
         public bool Remove(int id);
+
+        public IEnumerable<Profession> GetProfessions();
     }
 }

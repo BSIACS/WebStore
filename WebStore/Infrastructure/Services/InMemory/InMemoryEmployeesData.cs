@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Data;
-using WebStore.Models;
+using WebStore.Domain.Employees;
 
 namespace WebStore.Services
 {
@@ -42,7 +42,12 @@ namespace WebStore.Services
         public Employee GetById(int id)
         {
             return _employees.FirstOrDefault(x => x.Id == id);
-        }        
+        }
+
+        public IEnumerable<Profession> GetProfessions()
+        {
+            throw new NotImplementedException();
+        }
 
         public bool Remove(int id)
         {

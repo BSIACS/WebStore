@@ -24,10 +24,11 @@ namespace WebStore.Components
 
             IEnumerable<Section> parentSections = sections.Where(s => s.ParentId is null);
 
-            List<SectionViewModel> parentSectionViews = parentSections.Select(s => new SectionViewModel() { 
-                Id = s.Id, 
-                Name = s.Name, 
-                Order = s.Order, 
+            List<SectionViewModel> parentSectionViews = parentSections.Select(s => new SectionViewModel() {
+                Id = s.Id,
+                Name = s.Name,
+                Order = s.Order,
+                productsQuantity = s.ParentId is null ? _productData.GetProducts().Where(p => p.SectionId == s.Id).Count() : 0,
             }).ToList();
 
             foreach (var parentSection in parentSectionViews) {
@@ -35,16 +36,23 @@ namespace WebStore.Components
 
                 parentSection.ChildSections = new List<SectionViewModel>();
 
+                int ChildSections_ProductsCount = parentSection.productsQuantity;
+
                 foreach (Section childSection in childs)
                 {
+                    int productQuantityTemp = _productData.GetProducts().Where(p => p.SectionId == childSection.Id).Count();
+                    ChildSections_ProductsCount += productQuantityTemp;
+
                     parentSection.ChildSections.Add(new SectionViewModel()
                     {
                         Id = childSection.Id,
                         Name = childSection.Name,
                         Order = childSection.Order,
                         ParentSection = parentSection,
+                        productsQuantity = productQuantityTemp,
                     });
                 }
+                parentSection.productsQuantity = ChildSections_ProductsCount;
 
                 parentSection.ChildSections.Sort((a, b) => Comparer<int>.Default.Compare(a.Order, b.Order));
             }
@@ -54,5 +62,6 @@ namespace WebStore.Components
 
             return View(parentSectionViews);
         }
+        
     }
 }

@@ -10,21 +10,41 @@ using System.Threading.Tasks;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Services;
 using WebStore.Services;
+using WebStore.DAL.Context;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using WebStore.Data;
+using WebStore.Infrastructure.Services.InSqlDataBase;
+using WebStore.Employees.DAL;
 
 namespace WebStore
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration) => _configuration = configuration;
+
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddTransient<IEmployeesDataService, InMemoryEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
-            services.AddTransient<IProductData, InMemoryProductData>();
+        {            
+            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection_2")));        //Соединение с базой данных WebStoreDb
+            services.AddTransient<WebStoreDbInitializer>();                             // Добавлен инициализатор базы данных WebStoreDb
+
+            services.AddDbContext<EmployeesDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("EmployeesDbConnection_2")));   //Соединение с базой данных EmployeesDb
+            services.AddTransient<EmployeesDbInitializer>();                            // Добавлен инициализатор базы данных EmployeesDb
+
+            services.AddTransient<IEmployeesDataService, InSqlDbEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
+            services.AddTransient<IProductData, InSqlDbProductData>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer webstoreDbInitializer, EmployeesDbInitializer employeesDbInitializer)
         {
+            webstoreDbInitializer.Initialize();                                         // Старт инициализатора базы данных WebStoreDb
+            employeesDbInitializer.Initialize();                                        // Старт инициализатора базы данных EmployeesDb
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
