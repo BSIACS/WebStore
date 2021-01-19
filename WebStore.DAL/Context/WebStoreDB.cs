@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WebStore.Domain.Entities;
+using WebStore.Domain.Identity;
 
 namespace WebStore.DAL.Context
 {
-    public class WebStoreDB : IdentityDbContext
+    public class WebStoreDB : IdentityDbContext<User, Role, string>
     {
         public DbSet<Product> Products { get; set; }
 
