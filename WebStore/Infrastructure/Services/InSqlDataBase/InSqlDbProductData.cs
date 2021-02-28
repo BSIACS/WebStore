@@ -21,6 +21,14 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
 
         public IEnumerable<Brand> GetBrands() => _dB.Brands.Include(brand => brand.Products);
 
+        public Product GetProductById(int id)
+        {
+            return _dB.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Section)
+                .FirstOrDefault(p => p.Id == id);
+        }
+
         public IEnumerable<Product> GetProducts(ProductFilter productFilter = null) {
             IQueryable<Product> products = _dB.Products;
 
@@ -34,5 +42,7 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
         }
 
         public IEnumerable<Section> GetSections() => _dB.Sections.Include(section => section.Products);
+
+
     }
 }

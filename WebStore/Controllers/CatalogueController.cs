@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Domain;
+using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
 
@@ -38,6 +39,15 @@ namespace WebStore.Controllers
                     ImageUrl = item.ImageUrl,
                 })
             });
+        }
+
+        public IActionResult Details(int id) {
+            Product product = _productData.GetProductById(id);
+
+            if (product is null)
+                return NotFound();
+
+            return View(product);
         }
     }
 }

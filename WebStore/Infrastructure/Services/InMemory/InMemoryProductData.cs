@@ -27,5 +27,10 @@ namespace WebStore.Infrastructure.Services
 
             return query;
         }
+
+        public Product GetProductById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
