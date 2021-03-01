@@ -7,6 +7,7 @@ using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
+using WebStore.Infrastructure.Mapping;
 
 namespace WebStore.Controllers
 {
@@ -47,7 +48,7 @@ namespace WebStore.Controllers
             if (product is null)
                 return NotFound();
 
-            return View(product);
+            return View(product.ToViewModel());
         }
     }
 }
