@@ -13,11 +13,13 @@ namespace WebStore.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<Role> roleManager)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
+            this._roleManager = roleManager;
         }
 
         #region Registration
@@ -37,6 +39,8 @@ namespace WebStore.Controllers
             var registration_result = await _userManager.CreateAsync(user, model.Password);
 
             if (registration_result.Succeeded) {
+                await _userManager.AddToRoleAsync(user, Role.User);
+
                 await _signInManager.SignInAsync(user, false);
 
                 return RedirectToAction("Index", "Home");
@@ -90,6 +94,49 @@ namespace WebStore.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        #endregion
+
+        #region Changepassword
+
+        [HttpGet]
+        public IActionResult ChangePassword() {
+            string userName = User.Identity.Name;
+
+            if (string.IsNullOrEmpty(userName))
+                return BadRequest();
+
+            return View(new ChangePasswordViewModel { UserName = userName });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel) {
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            User user = await _userManager.FindByNameAsync(viewModel.UserName);
+
+            if (user is not null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
+
+                if (!result.Succeeded)
+                    return BadRequest();
+            }
+
+            return View("PasswordChangedSuccessfully");
+        }
+
+        #endregion
+
+        #region CurrentUserDetail
+        public async Task<IActionResult> CurrentUserDetail() {
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (user is null)
+                return BadRequest();
+
+            return View(user);
+        }
         #endregion
 
         public IActionResult AccessDenied() => View();
