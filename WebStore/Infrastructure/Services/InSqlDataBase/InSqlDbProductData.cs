@@ -32,11 +32,19 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
         public IEnumerable<Product> GetProducts(ProductFilter productFilter = null) {
             IQueryable<Product> products = _dB.Products;
 
-            if (productFilter?.BrandId != null)
-                products = products.Where(p => p.BrandId == productFilter.BrandId);
+            if (productFilter?.ProductsIds?.Length > 0) {
+                if (productFilter?.ProductsIds?.Length > 0)
+                {
+                    products = products.Where(p => productFilter.ProductsIds.Contains(p.Id));
+                }
+            }
+            else {
+                if (productFilter?.BrandId != null)
+                    products = products.Where(p => p.BrandId == productFilter.BrandId);
 
-            if (productFilter?.SectionId != null)
-                products = products.Where(p => p.SectionId == productFilter.SectionId);
+                if (productFilter?.SectionId != null)
+                    products = products.Where(p => p.SectionId == productFilter.SectionId);
+            }            
 
             return products;
         }

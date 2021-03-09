@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WebStore.Domain.Entities
 {
-    class Cart
+    public class Cart
     {
         public ICollection<CartItem> Items { get; set; } = new List<CartItem>();
 

@@ -19,6 +19,7 @@ using WebStore.Infrastructure.Services.InSqlDataBase;
 using WebStore.Employees.DAL;
 using WebStore.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
+using WebStore.Infrastructure.Services.InCookies;
 
 namespace WebStore
 {
@@ -71,6 +72,7 @@ namespace WebStore
 
             services.AddTransient<IEmployeesDataService, InSqlDbEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
             services.AddTransient<IProductData, InSqlDbProductData>();
+            services.AddScoped<ICartService, InCookiesCartService>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
