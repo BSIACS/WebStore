@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.DAL.Context;
+using WebStore.Domain.Identity;
 
 namespace WebStore.Data
 {
@@ -12,11 +14,21 @@ namespace WebStore.Data
     {
         private readonly WebStoreDB _webStoreDB;
         private readonly ILogger<WebStoreDbInitializer> _logger;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public WebStoreDbInitializer(WebStoreDB webStoreDB, ILogger<WebStoreDbInitializer> logger)
+
+        public WebStoreDbInitializer(
+            WebStoreDB webStoreDB,
+            ILogger<WebStoreDbInitializer> logger,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager
+            )
         {
             this._webStoreDB = webStoreDB;
             this._logger = logger;
+            this._roleManager = roleManager;
+            this._userManager = userManager;
         }
 
         public void Initialize() {
@@ -40,11 +52,23 @@ namespace WebStore.Data
             }
             catch(Exception e) {
                 _logger.LogError(e, "Ошибка при инициализации таблицы товаров");
-
                 throw;
             }
 
-            InitializeProducts();
+            try
+            {
+                InitializeIdentityAsync().Wait();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Ошибка при инициализации БД системы Identity");
+                throw;
+            }
+            finally {
+                _logger.LogError(null, "Test, test, test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
+
+            
         }
 
         private void InitializeProducts() {
@@ -89,6 +113,41 @@ namespace WebStore.Data
 
                 _webStoreDB.Database.CommitTransaction();
             }
+        }
+        
+        public async Task InitializeIdentityAsync() { 
+            
+            async Task EnsureRoleCreated(string name) {
+                if (! await _roleManager.RoleExistsAsync(name))
+                    await _roleManager.CreateAsync(new Role { Name = name });
+            }
+
+            await EnsureRoleCreated(Role.Administrator);
+            await EnsureRoleCreated(Role.User);
+
+            if ((await _userManager.FindByNameAsync(User.Administrator)) is null)
+            {
+                User adminUser = new User { UserName = User.Administrator };
+
+                var userCreationResult = await _userManager.CreateAsync(adminUser, User.DeafultAdminPassword);
+
+                if (userCreationResult.Succeeded)
+                {
+                    var addToRoleResult = await _userManager.AddToRoleAsync(adminUser, Role.Administrator);
+
+                    if (!addToRoleResult.Succeeded)
+                    {
+                        var errors = addToRoleResult.Errors.Select(e => e.Description);
+                        throw new InvalidOperationException($"Ошибка при добавлении роли пользователю 'Администратор'. {string.Join(',', errors)}");
+                    }
+                }
+                else
+                {
+                    var errors = userCreationResult.Errors.Select(e => e.Description);
+                    throw new InvalidOperationException($"Ошибка при создании учетной записи пользователя 'Администратор'. {string.Join(',', errors)}");
+                }
+            }            
+
         }
     }
 }

@@ -19,6 +19,7 @@ using WebStore.Infrastructure.Services.InSqlDataBase;
 using WebStore.Employees.DAL;
 using WebStore.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
+using WebStore.Infrastructure.Services.InCookies;
 
 namespace WebStore
 {
@@ -30,10 +31,10 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {            
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));        //Соединение с базой данных WebStoreDb
+            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(_configuration.GetConnectionString("DefaultConnection_2")));        //Соединение с базой данных WebStoreDb
             services.AddTransient<WebStoreDbInitializer>();                             // Добавлен инициализатор базы данных WebStoreDb
 
-            services.AddDbContext<EmployeesDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("EmployeesDbConnection")));   //Соединение с базой данных EmployeesDb
+            services.AddDbContext<EmployeesDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("EmployeesDbConnection_2")));   //Соединение с базой данных EmployeesDb
             services.AddTransient<EmployeesDbInitializer>();                            // Добавлен инициализатор базы данных EmployeesDb
 
             services.AddIdentity<User, Role>()
@@ -71,6 +72,7 @@ namespace WebStore
 
             services.AddTransient<IEmployeesDataService, InSqlDbEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
             services.AddTransient<IProductData, InSqlDbProductData>();
+            services.AddScoped<ICartService, InCookiesCartService>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
