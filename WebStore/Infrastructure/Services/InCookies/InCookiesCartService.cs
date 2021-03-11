@@ -45,7 +45,7 @@ namespace WebStore.Infrastructure.Services.InCookies
             this._httpContextAccessor = httpContextAccessor;
 
             var user = httpContextAccessor.HttpContext.User;
-            var userName = user.Identity.IsAuthenticated ? $"({user.Identity.Name})" : null;
+            var userName = user.Identity.IsAuthenticated ? $"{user.Identity.Name}" : null;
 
             _cartName = $"WebStore{userName}";
         }

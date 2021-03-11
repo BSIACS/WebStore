@@ -30,7 +30,7 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
         }
 
         public IEnumerable<Product> GetProducts(ProductFilter productFilter = null) {
-            IQueryable<Product> products = _dB.Products;
+            IQueryable<Product> products = _dB.Products.Include(p => p.Brand);
 
             if (productFilter?.ProductsIds?.Length > 0) {
                 if (productFilter?.ProductsIds?.Length > 0)
