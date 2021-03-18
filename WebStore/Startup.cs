@@ -73,6 +73,7 @@ namespace WebStore
             services.AddTransient<IEmployeesDataService, InSqlDbEmployeesData>();      // Добавлен сервис для работы со списком сотрудников
             services.AddTransient<IProductData, InSqlDbProductData>();
             services.AddScoped<ICartService, InCookiesCartService>();
+            services.AddTransient<IOrderService, SqlOrderService>();
             services.AddMvc();                                                          // Добавлены сервисы MVC
         }
 
