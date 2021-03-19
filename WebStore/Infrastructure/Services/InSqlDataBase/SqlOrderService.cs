@@ -40,7 +40,12 @@ namespace WebStore.Infrastructure.Services.InSqlDataBase
 
         public async Task<Order> GetOrderById(int id)
         {
-            Order order = await _dB.Orders.FirstOrDefaultAsync(o => o.Id == id);
+            Order order = await _dB.Orders
+                .Include(o => o.User)
+                .Include(o => o.Items)
+                .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.Brand)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             return order;
         }
